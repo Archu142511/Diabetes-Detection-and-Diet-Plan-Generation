@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result - Diabetes Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="result-container">
+        <div class="result-box">
+            <h2 class="{{ 'positive' if data['severity'] == 'Positive' else 'moderate' if data['severity'] == 'Moderate' else 'negative' }}">
+                <b>Diabetes Prediction: {{ data['severity'] }} Risk</b>
+            </h2>
+            <p><strong>Blood Sugar Range:</strong> {{ data['blood_sugar_range'] }}</p>
+            
+            {% if data['severity'] == 'Negative' %}
+                <h3>Your Healthy Lifestyle Plan:</h3>
+                <table class="diet-plan-table">
+                    <tr><th>Foods to Include</th><td>{{ data['food']|join(', ') }}</td></tr>
+                    <tr><th>Fruits to Enjoy</th><td>{{ data['fruits']|join(', ') }}</td></tr>
+                    <tr><th>Vegetables to Include</th><td>{{ data['vegetables']|join(', ') }}</td></tr>
+                </table>
+            {% else %}
+                <h3>Your Diabetes Management Plan:</h3>
+                <table class="diet-plan-table">
+                    <tr><th>Foods to Include</th><td>{{ data['food']|join(', ') }}</td></tr>
+                    <tr><th>Fruits to Eat</th><td>{{ data['fruits']|join(', ') }}</td></tr>
+                    <tr><th>Vegetables to Eat</th><td>{{ data['vegetables']|join(', ') }}</td></tr>
+                </table>
+            {% endif %}
+            
+            <h3>5210 Rule for Healthy Living:</h3>
+            <ul>
+                {% for item in data['5210_rule'] %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+
+            {% if quote %}
+                <p class="quote">"{{ quote }}"</p>
+            {% endif %}
+            
+            <a href="/form" class="btn">Try Again</a>
+        </div>
+    </div>
+</body>
+</html>
